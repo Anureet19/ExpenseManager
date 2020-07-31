@@ -1,10 +1,10 @@
-package com.anureet.expensemanager
+package com.anureet.expensemanager.ui
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.anureet.expensemanager.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,8 +16,16 @@ class MainActivity : AppCompatActivity() {
         var openedFirstTime: String? = sharedPreferences.getString("FirstTimeInstall","")
 
         if(openedFirstTime.equals("Yes")){
-//            val intent = Intent(this, HostActivity::class.java)
-//            startActivity(intent)
+
+            // Code to Test AddTransactionFragment
+
+//            val fragment = AddTransactionFragment()
+//            val fragmentManager = supportFragmentManager
+//            val fragmentTransaction = fragmentManager.beginTransaction()
+//
+//            fragmentTransaction.add(R.id.main_container,fragment)
+//            fragmentTransaction.commit()
+
         }else{
             val fragment = OnboardingFragment()
             val fragmentManager = supportFragmentManager
