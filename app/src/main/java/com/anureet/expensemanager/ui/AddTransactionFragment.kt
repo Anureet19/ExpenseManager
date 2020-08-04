@@ -2,6 +2,7 @@ package com.anureet.expensemanager.ui
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,15 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.anureet.expensemanager.MaterialSpinnerAdapter
 import com.anureet.expensemanager.R
 import com.anureet.expensemanager.data.Transaction
 import com.anureet.expensemanager.data.TransactionType
+import com.anureet.expensemanager.readableFormat
+import com.anureet.expensemanager.selectMonth
 import kotlinx.android.synthetic.main.fragment_add_transaction.*
 import kotlinx.android.synthetic.main.fragment_add_transaction.transaction_name
+import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -43,14 +50,14 @@ class AddTransactionFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         // Implementation of DatePicker to set valid dates
-        transaction_date_layout.editText?.transformIntoDatePicker(requireContext(), "MM/dd/yyyy")
-        transaction_date_layout.editText?.transformIntoDatePicker(requireContext(), "MM/dd/yyyy", Date())
+        transaction_date_layout.editText?.transformIntoDatePicker(requireContext(), "dd/MM/yyyy")
+        transaction_date_layout.editText?.transformIntoDatePicker(requireContext(), "dd/MM/yyyy", Date())
 
-        recurring_from_date.editText?.transformIntoDatePicker(requireContext(), "MM/dd/yyyy")
-        recurring_from_date.editText?.transformIntoDatePicker(requireContext(), "MM/dd/yyyy", Date())
+        recurring_from_date.editText?.transformIntoDatePicker(requireContext(), "dd/MM/yyyy")
+        recurring_from_date.editText?.transformIntoDatePicker(requireContext(), "dd/MM/yyyy", Date())
 
-        recurring_to_date.editText?.transformIntoDatePicker(requireContext(), "MM/dd/yyyy")
-        recurring_to_date.editText?.transformIntoDatePicker(requireContext(), "MM/dd/yyyy", Date())
+        recurring_to_date.editText?.transformIntoDatePicker(requireContext(), "dd/MM/yyyy")
+        recurring_to_date.editText?.transformIntoDatePicker(requireContext(), "dd/MM/yyyy", Date())
 
         // Setting up drop down
         val type = mutableListOf<String>()
@@ -79,22 +86,28 @@ class AddTransactionFragment : Fragment() {
     private fun setData(transaction: Transaction){
         transaction_name.editText?.setText(transaction.name)
         transaction_amount_add.editText?.setText(transaction.amount.toString())
-        transaction_date_layout.editText?.setText(transaction.date)
+        transaction_date_layout.editText?.setText(transaction.date.toString())
         transaction_type_spinner_layout.editText?.setText(transaction.transaction_type)
         category_spinner_layout.editText?.setText(transaction.category)
         comments.editText?.setText(transaction.comments)
     }
 
     // Saving task
+//    @RequiresApi(Build.VERSION_CODES.O)
     private fun saveTask(){
         val name = transaction_name.editText?.text.toString()
         val amount = transaction_amount_add.editText?.text.toString()
         val category = category_spinner_layout.editText?.text.toString()
+
         val date = transaction_date_layout.editText?.text.toString()
+//        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH)
+//        val date = LocalDate.parse(date_string, formatter)
+        val month = selectMonth(date.substring(3,5))
+
         val type = transaction_type_spinner_layout.editText?.text.toString()
         val comments = comments.editText?.text.toString()
 
-        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments)
+        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments,month)
         viewModel.saveTask(transaction)
 
         requireActivity().onBackPressed()

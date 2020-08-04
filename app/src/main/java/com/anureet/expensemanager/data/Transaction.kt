@@ -3,6 +3,8 @@ package com.anureet.expensemanager.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.LocalDate
+import java.util.*
 
 
 enum class TransactionType{
@@ -16,4 +18,5 @@ data class Transaction (@PrimaryKey(autoGenerate = true) val id: Long,
                         val date: String,
                         val category: String,
                         val transaction_type: String,
-                        val comments: String)
+                        val comments: String,
+                        val month: String)

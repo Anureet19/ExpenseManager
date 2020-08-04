@@ -34,6 +34,7 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        // Transaction List
         with(transaction_list){
             layoutManager = LinearLayoutManager(activity)
             adapter = TransactionAdapter {
@@ -53,9 +54,25 @@ class HomeFragment : Fragment() {
             )
         }
 
+        // Month Card List
+        with(monthly_card_list){
+            layoutManager = LinearLayoutManager(activity)
+            adapter = MonthlyCardAdapter {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToMonthlyExpenseFragment(
+                        it
+                    )
+                )
+            }
+        }
+
         viewModel.transactions.observe(viewLifecycleOwner, Observer{
             (transaction_list.adapter as TransactionAdapter).submitList(it)
+            (monthly_card_list.adapter as MonthlyCardAdapter).submitList(it)
+
         })
+
+
     }
 
 

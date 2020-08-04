@@ -10,17 +10,17 @@ import com.anureet.expensemanager.R
 import com.anureet.expensemanager.data.Transaction
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item.*
-import kotlinx.android.synthetic.main.list_item.transaction_date
+import kotlinx.android.synthetic.main.month_card.*
 
-class TransactionAdapter(private val listener: (Long) -> Unit):
-    ListAdapter<Transaction, TransactionAdapter.ViewHolder>(
+class MonthlyCardAdapter(private val listener: (Long) -> Unit):
+    ListAdapter<Transaction, MonthlyCardAdapter.ViewHolder>(
         DiffCallback()
     ){
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ViewHolder {
         val itemLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_item, parent, false)
+            .inflate(R.layout.month_card, parent, false)
 
         return ViewHolder(itemLayout)
     }
@@ -39,22 +39,19 @@ class TransactionAdapter(private val listener: (Long) -> Unit):
 
         fun bind(transaction: Transaction){
             with(transaction){
-
-                transaction_mode.text = transaction.transaction_type
-                transaction_name.text = transaction.name
-                transaction_amount.text = ""+transaction.amount
-                transaction_date.text = ""+transaction.date
+                month_name.text = transaction.month
+                budget_exceeded.text = "not exceeded"
             }
         }
     }
 }
 
-class DiffCallback : DiffUtil.ItemCallback<Transaction>() {
-    override fun areItemsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
-        return oldItem == newItem
-    }
-}
+//class DiffCallback : DiffUtil.ItemCallback<Transaction>() {
+//    override fun areItemsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
+//        return oldItem.id == newItem.id
+//    }
+//
+//    override fun areContentsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
+//        return oldItem == newItem
+//    }
+//}
