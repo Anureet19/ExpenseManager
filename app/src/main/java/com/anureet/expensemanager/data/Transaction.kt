@@ -19,4 +19,6 @@ data class Transaction (@PrimaryKey(autoGenerate = true) val id: Long,
                         val category: String,
                         val transaction_type: String,
                         val comments: String,
-                        val month: String)
+                        val month: Int,
+                        val year: Int,
+                        val day: Int)
