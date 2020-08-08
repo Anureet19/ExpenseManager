@@ -9,6 +9,14 @@
         android:name="com.anureet.expensemanager.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue="hey" />
+        <argument
+            android:name="budget"
+            app:argType="float"
+            android:defaultValue="0.0" />
         <action
             android:id="@+id/action_homeFragment_to_addTransactionFragment"
             app:destination="@id/addTransactionFragment"
@@ -52,5 +60,6 @@
         <action
             android:id="@+id/action_onboardingFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+
     </fragment>
 </navigation>
