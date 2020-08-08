@@ -2,8 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation"
-    app:startDestination="@id/homeFragment">
+    android:id="@+id/navigation">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -44,5 +43,14 @@
             android:name="id"
             app:argType="long"
             android:defaultValue="0L"/>
+    </fragment>
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.anureet.expensemanager.ui.OnboardingFragment"
+        android:label="OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding">
+        <action
+            android:id="@+id/action_onboardingFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.anureet.expensemanager.R
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,28 +18,23 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences : SharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
         var openedFirstTime: String? = sharedPreferences.getString("FirstTimeInstall","")
 
+        val navHostFragment = nav_host_fragment as NavHostFragment
+        val inflater = navHostFragment.navController.navInflater
+        val graph = inflater.inflate(R.navigation.navigation)
+
+
         if(openedFirstTime.equals("Yes")){
 
-            // Code to Test AddTransactionFragment
-
-//            val fragment = AddTransactionFragment()
-//            val fragmentManager = supportFragmentManager
-//            val fragmentTransaction = fragmentManager.beginTransaction()
-//
-//            fragmentTransaction.add(R.id.main_container,fragment)
-//            fragmentTransaction.commit()
+            graph.startDestination = R.id.homeFragment
 
         }else{
-            val fragment = OnboardingFragment()
-            val fragmentManager = supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
 
-            fragmentTransaction.add(R.id.main_container,fragment)
-            fragmentTransaction.commit()
-
+            graph.startDestination = R.id.onboardingFragment
             val editor:SharedPreferences.Editor =  sharedPreferences.edit()
             editor.putString("FirstTimeInstall","Yes")
             editor.apply()
+
         }
+        navHostFragment.navController.graph = graph
     }
 }
