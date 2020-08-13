@@ -1,6 +1,10 @@
 package com.anureet.expensemanager.ui
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.anureet.expensemanager.R
 import kotlinx.android.synthetic.main.fragment_home.*
 import androidx.lifecycle.Observer
+import com.anureet.expensemanager.data.Transaction
+import org.eazegraph.lib.models.PieModel
 
 
 class HomeFragment : Fragment() {
@@ -34,6 +40,24 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        // Getting data to set up name and monthly budget in the home screen
+        val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
+        var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
+
+        net_balance.text = monthlyBudget.toString()
+
+        // Adding pie chart
+        piechart.addPieSlice(
+            PieModel("Cash", 50F, Color.parseColor("#FFA726"))
+        )
+        piechart.addPieSlice(
+            PieModel("Credit", 25F, Color.parseColor("#66BB6A"))
+        )
+        piechart.addPieSlice(
+            PieModel("Bank", 25F, Color.parseColor("#EF5350"))
+        )
+        piechart.startAnimation();
+
         // Transaction List
         with(transaction_list){
             layoutManager = LinearLayoutManager(activity)
@@ -55,20 +79,28 @@ class HomeFragment : Fragment() {
         }
 
         // Month Card List
-        with(monthly_card_list){
-            layoutManager = LinearLayoutManager(activity)
-            adapter = MonthlyCardAdapter {
-                findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToMonthlyExpenseFragment(
-                        it
-                    )
-                )
-            }
-        }
+//        with(monthly_card_list){
+//            layoutManager = LinearLayoutManager(activity)
+//            adapter = MonthlyCardAdapter {
+//                findNavController().navigate(
+//                    HomeFragmentDirections.actionHomeFragmentToMonthlyExpenseFragment(
+//                        it
+//                    )
+//                )
+//            }
+//
+//        }
+
+//        viewModel.month.observe(viewLifecycleOwner, Observer{
+//            Log.d("Main Activity","list :"+ it)
+//
+//
+//        })
+
 
         viewModel.transactions.observe(viewLifecycleOwner, Observer{
             (transaction_list.adapter as TransactionAdapter).submitList(it)
-            (monthly_card_list.adapter as MonthlyCardAdapter).submitList(it)
+//            (monthly_card_list.adapter as MonthlyCardAdapter).submitList(it)
 
         })
 

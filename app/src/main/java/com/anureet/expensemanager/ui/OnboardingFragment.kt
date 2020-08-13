@@ -37,13 +37,13 @@ class OnboardingFragment : Fragment() {
         monthly_income.editText?.addTextChangedListener(boardingTextWatcher)
 
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference",Context.MODE_PRIVATE)
-        val name = profile_name.editText?.text.toString()
-        val monthlyBudget = monthly_budget.editText?.text.toString()
 
         continueButton.setOnClickListener {
+            val name = profile_name.editText?.text.toString()
+            val monthlyBudget = monthly_budget.editText?.text.toString()
             val editor:SharedPreferences.Editor =  sharedPreferences.edit()
             editor.putString("Name",name)
-            editor.putString("Budget",monthlyBudget)
+            editor.putFloat("Budget",monthlyBudget.toFloat())
             editor.apply()
             findNavController().navigate(
                 OnboardingFragmentDirections.actionOnboardingFragmentToHomeFragment(name,monthlyBudget.toFloat())
@@ -58,6 +58,7 @@ class OnboardingFragment : Fragment() {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
             val name = profile_name.editText?.text.toString()
             val monthlyBudget = monthly_budget.editText?.text.toString()
 
@@ -81,6 +82,7 @@ class OnboardingFragment : Fragment() {
                 monthly_budget.error = null
                 profile_name.error = null
             }
+
         }
 
     }

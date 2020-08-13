@@ -12,63 +12,74 @@
         android:layout_height="match_parent">
         <!-- ProgressBar that represents a chart slice, where "android:progress" is the % value of the slice -->
 
-    <ProgressBar
-        android:id="@+id/empty_progressbar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="100"
-        android:progressDrawable="@drawable/empty_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/empty_progressbar"-->
+<!--        style="?android:attr/progressBarStyleHorizontal"-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="120dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:indeterminate="false"-->
+<!--        android:max="100"-->
+<!--        android:progress="100"-->
+<!--        android:progressDrawable="@drawable/empty_progress"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <ProgressBar
-        android:id="@+id/cash_progressbar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="25"
-        android:progressDrawable="@drawable/cash_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <!--    <ProgressBar-->
+<!--        android:id="@+id/cash_progressbar"-->
+<!--        style="?android:attr/progressBarStyleHorizontal"-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="120dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:indeterminate="false"-->
+<!--        android:max="100"-->
+<!--        android:progress="25"-->
+<!--        android:progressDrawable="@drawable/cash_progress"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <ProgressBar
-        android:id="@+id/credit_progressbar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="25"
-        android:progressDrawable="@drawable/credit_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/credit_progressbar"-->
+<!--        style="?android:attr/progressBarStyleHorizontal"-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="120dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:indeterminate="false"-->
+<!--        android:max="100"-->
+<!--        android:progress="25"-->
+<!--        android:progressDrawable="@drawable/credit_progress"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <ProgressBar
-        android:id="@+id/debit_progressbar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="25"
-        android:progressDrawable="@drawable/bank_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/debit_progressbar"-->
+<!--        style="?android:attr/progressBarStyleHorizontal"-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="120dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:indeterminate="false"-->
+<!--        android:max="100"-->
+<!--        android:progress="25"-->
+<!--        android:progressDrawable="@drawable/bank_progress"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <TextView
+        <org.eazegraph.lib.charts.PieChart
+            android:id="@+id/piechart"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="32dp"
+            android:padding="6dp"
+            app:layout_constraintBottom_toBottomOf="@+id/debit_amount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/net_balance"
+            app:layout_constraintTop_toTopOf="@+id/net_balance_label" />
+
+        <TextView
         android:id="@+id/net_balance_label"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

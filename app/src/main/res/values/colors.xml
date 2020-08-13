@@ -3,4 +3,13 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="color_one">#fb7268</color>
+    <color name="color_white">#ededf2</color>
+    <color name="color_two">#E3E0E0</color>
+
+    <color name="cash">#FFA726</color>
+    <color name="bank">#66BB6A</color>
+    <color name="credit">#EF5350</color>
+    <color name="empty">#FF0000</color>
 </resources>
