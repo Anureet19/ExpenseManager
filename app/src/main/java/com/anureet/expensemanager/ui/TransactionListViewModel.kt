@@ -12,4 +12,7 @@ class TransactionListViewModel(application: Application): AndroidViewModel(appli
 
     val transactions: LiveData<List<Transaction>>
     get() = repo.getTransactions()
+
+//    val month: LiveData<List<String>>
+//    get() = repo.getMonth()
 }

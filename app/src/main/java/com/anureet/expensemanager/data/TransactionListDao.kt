@@ -9,4 +9,8 @@ import androidx.room.Query
 interface TransactionListDao{
     @Query("SELECT * FROM `transaction`")
     fun getTransactions(): LiveData<List<Transaction>>
+
+    @Query("SELECT month, year, day, SUM(amount) FROM `transaction` GROUP BY year, month ORDER BY year, month, day")
+    fun getMonth(): LiveData<List<MonthlyTransactions>>
+
 }

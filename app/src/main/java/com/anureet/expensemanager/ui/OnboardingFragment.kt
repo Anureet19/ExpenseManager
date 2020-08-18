@@ -43,7 +43,7 @@ class OnboardingFragment : Fragment() {
             val monthlyBudget = monthly_budget.editText?.text.toString()
             val editor:SharedPreferences.Editor =  sharedPreferences.edit()
             editor.putString("Name",name)
-            editor.putFloat("Budget",monthlyBudget.toFloat())
+            editor.putFloat(getString(R.string.netBalance),monthlyBudget.toFloat())
             editor.apply()
             findNavController().navigate(
                 OnboardingFragmentDirections.actionOnboardingFragmentToHomeFragment(name,monthlyBudget.toFloat())

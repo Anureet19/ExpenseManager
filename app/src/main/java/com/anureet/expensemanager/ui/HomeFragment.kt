@@ -46,17 +46,7 @@ class HomeFragment : Fragment() {
 
         net_balance.text = monthlyBudget.toString()
 
-        // Adding pie chart
-        piechart.addPieSlice(
-            PieModel("Cash", 50F, Color.parseColor("#FFA726"))
-        )
-        piechart.addPieSlice(
-            PieModel("Credit", 25F, Color.parseColor("#66BB6A"))
-        )
-        piechart.addPieSlice(
-            PieModel("Bank", 25F, Color.parseColor("#EF5350"))
-        )
-        piechart.startAnimation();
+        updatePieChart()
 
         // Transaction List
         with(transaction_list){
@@ -105,6 +95,20 @@ class HomeFragment : Fragment() {
         })
 
 
+    }
+
+    fun updatePieChart(){
+        // Adding pie chart
+        piechart.addPieSlice(
+            PieModel("Cash", 50F, Color.parseColor("#FFA726"))
+        )
+        piechart.addPieSlice(
+            PieModel("Credit", 25F, Color.parseColor("#66BB6A"))
+        )
+        piechart.addPieSlice(
+            PieModel("Bank", 25F, Color.parseColor("#EF5350"))
+        )
+        piechart.startAnimation();
     }
 
 

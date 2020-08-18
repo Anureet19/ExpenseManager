@@ -2,6 +2,7 @@ package com.anureet.expensemanager.ui
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.anureet.expensemanager.MaterialSpinnerAdapter
 import com.anureet.expensemanager.R
 import com.anureet.expensemanager.data.Transaction
@@ -65,20 +67,18 @@ class AddTransactionFragment : Fragment() {
         val adapter = MaterialSpinnerAdapter(requireActivity(), R.layout.spinner_item, type)
         (transaction_type_spinner_layout.editText as? AutoCompleteTextView)?.setAdapter(adapter)
 
-        val id = AddTransactionFragmentArgs.fromBundle(
-            requireArguments()
-        ).id
-
+        val id = AddTransactionFragmentArgs.fromBundle(requireArguments()).id
         viewModel.setTaskId(id)
+
 
         viewModel.transaction.observe(viewLifecycleOwner, Observer {
             it?.let{ setData(it) }
         })
         expense_button.setOnClickListener {
-            saveTask()
+            saveTask(Mode.EXPENSE)
         }
         income_button.setOnClickListener {
-            saveTask()
+            saveTask(Mode.INCOME)
         }
     }
 
@@ -93,24 +93,45 @@ class AddTransactionFragment : Fragment() {
     }
 
     // Saving task
-//    @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveTask(){
+    private fun <E : Enum<E>> saveTask(mode: E){
         val name = transaction_name.editText?.text.toString()
         val amount = transaction_amount_add.editText?.text.toString()
         val category = category_spinner_layout.editText?.text.toString()
 
         val date = transaction_date_layout.editText?.text.toString()
-//        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH)
-//        val date = LocalDate.parse(date_string, formatter)
-        val month = selectMonth(date.substring(3,5))
+
+        // Storing date as day,month and year
+        val month = Integer.parseInt(date.substring(3,5))
+        val year = Integer.parseInt(date.substring(6))
+        val day = Integer.parseInt(date.substring(0,2))
 
         val type = transaction_type_spinner_layout.editText?.text.toString()
         val comments = comments.editText?.text.toString()
 
-        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments,month)
+        updateNetBalance(mode,amount)
+
+        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments, month, year, day)
         viewModel.saveTask(transaction)
 
-        requireActivity().onBackPressed()
+        activity!!.onBackPressed()
+    }
+
+    // Updating net balance
+    fun <E : Enum<E>> updateNetBalance(mode: E, amount: String){
+        val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
+        var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
+
+        if(mode == Mode.EXPENSE){
+            monthlyBudget = (monthlyBudget - amount.toDouble()).toFloat()
+        }else{
+            monthlyBudget = (monthlyBudget + amount.toDouble()).toFloat()
+        }
+
+
+        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+        editor.putFloat(getString(R.string.netBalance), monthlyBudget)
+        editor.apply()
+
     }
 
 
@@ -142,6 +163,10 @@ class AddTransactionFragment : Fragment() {
         }
     }
 
+}
+
+enum class Mode{
+    INCOME, EXPENSE
 }
 
 
