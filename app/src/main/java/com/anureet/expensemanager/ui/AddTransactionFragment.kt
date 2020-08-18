@@ -3,30 +3,23 @@ package com.anureet.expensemanager.ui
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
-import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import com.anureet.expensemanager.MaterialSpinnerAdapter
 import com.anureet.expensemanager.R
 import com.anureet.expensemanager.data.Transaction
 import com.anureet.expensemanager.data.TransactionType
-import com.anureet.expensemanager.readableFormat
-import com.anureet.expensemanager.selectMonth
 import kotlinx.android.synthetic.main.fragment_add_transaction.*
-import kotlinx.android.synthetic.main.fragment_add_transaction.transaction_name
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -98,19 +91,31 @@ class AddTransactionFragment : Fragment() {
         val amount = transaction_amount_add.editText?.text.toString()
         val category = category_spinner_layout.editText?.text.toString()
 
-        val date = transaction_date_layout.editText?.text.toString()
+        var date = transaction_date_layout.editText?.text.toString()
 
         // Storing date as day,month and year
         val month = Integer.parseInt(date.substring(3,5))
         val year = Integer.parseInt(date.substring(6))
         val day = Integer.parseInt(date.substring(0,2))
 
+        if(month<10)
+            date = ""+year+"-0"+month+"-"+day
+        else
+            date = ""+year+"-"+month+"-"+day
+
+        val datePicker: Date = Date(year,month,day)
+        Log.d("Add Transaction","date: "+date)
+
+//        val formatter: DateFormat = SimpleDateFormat("dd-MM-yyyy")
+//        val datePicker = formatter.parse(date) as Date
+//        System.out.println("Today is " + date.time)
+
         val type = transaction_type_spinner_layout.editText?.text.toString()
         val comments = comments.editText?.text.toString()
 
         updateNetBalance(mode,amount)
 
-        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments, month, year, day)
+        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments, month, year, day, datePicker)
         viewModel.saveTask(transaction)
 
         activity!!.onBackPressed()
@@ -157,7 +162,7 @@ class AddTransactionFragment : Fragment() {
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)
             ).run {
-                maxDate?.time?.also { datePicker.maxDate = it }
+//                maxDate?.time?.also { datePicker.maxDate = it }
                 show()
             }
         }

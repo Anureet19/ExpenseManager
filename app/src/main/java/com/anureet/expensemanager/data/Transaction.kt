@@ -1,5 +1,6 @@
 package com.anureet.expensemanager.data
 
+import android.widget.DatePicker
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -21,4 +22,6 @@ data class Transaction (@PrimaryKey(autoGenerate = true) val id: Long,
                         val comments: String,
                         val month: Int,
                         val year: Int,
-                        val day: Int)
+                        val day: Int,
+                        val datePicker: Date
+)
