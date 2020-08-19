@@ -104,11 +104,7 @@ class AddTransactionFragment : Fragment() {
             date = ""+year+"-"+month+"-"+day
 
         val datePicker: Date = Date(year,month,day)
-        Log.d("Add Transaction","date: "+date)
-
-//        val formatter: DateFormat = SimpleDateFormat("dd-MM-yyyy")
-//        val datePicker = formatter.parse(date) as Date
-//        System.out.println("Today is " + date.time)
+        Log.d("Add Transaction","date: "+datePicker)
 
         val type = transaction_type_spinner_layout.editText?.text.toString()
         val comments = comments.editText?.text.toString()
@@ -173,5 +169,3 @@ class AddTransactionFragment : Fragment() {
 enum class Mode{
     INCOME, EXPENSE
 }
-
-
