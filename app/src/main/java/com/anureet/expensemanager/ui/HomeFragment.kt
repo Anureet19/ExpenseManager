@@ -73,23 +73,21 @@ class HomeFragment : Fragment() {
         }
 
         // Month Card List
-//        with(monthly_card_list){
-//            layoutManager = LinearLayoutManager(activity)
-//            adapter = MonthlyCardAdapter {
-//                findNavController().navigate(
-//                    HomeFragmentDirections.actionHomeFragmentToMonthlyExpenseFragment(
-//                        it
-//                    )
-//                )
-//            }
-//
-//        }
+        with(monthly_card_list){
+            layoutManager = LinearLayoutManager(activity)
+            adapter = MonthlyCardAdapter {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToMonthlyExpenseFragment(
+                        it
+                    )
+                )
+            }
 
-//        viewModel.month.observe(viewLifecycleOwner, Observer{
-//            Log.d("Main Activity","list :"+ it)
-//
-//
-//        })
+        }
+
+        viewModel.month.observe(viewLifecycleOwner, Observer{
+            (monthly_card_list.adapter as MonthlyCardAdapter).submitList(it)
+        })
 
 
         viewModel.transactions.observe(viewLifecycleOwner, Observer{

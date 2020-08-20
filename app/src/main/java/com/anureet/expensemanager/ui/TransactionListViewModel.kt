@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.anureet.expensemanager.data.MonthlyTransactions
 import com.anureet.expensemanager.data.Transaction
 import com.anureet.expensemanager.data.TransactionListRepository
 
@@ -13,6 +14,6 @@ class TransactionListViewModel(application: Application): AndroidViewModel(appli
     val transactions: LiveData<List<Transaction>>
     get() = repo.getTransactions()
 
-//    val month: LiveData<List<String>>
-//    get() = repo.getMonth()
+    val month: LiveData<List<MonthlyTransactions>>
+    get() = repo.getMonth()
 }

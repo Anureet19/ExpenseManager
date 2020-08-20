@@ -23,5 +23,6 @@ data class Transaction (@PrimaryKey(autoGenerate = true) val id: Long,
                         val month: Int,
                         val year: Int,
                         val day: Int,
-                        val datePicker: Date
+                        val datePicker: Date,
+                        val monthYear: Long
 )

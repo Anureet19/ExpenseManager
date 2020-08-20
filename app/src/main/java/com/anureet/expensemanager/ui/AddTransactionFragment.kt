@@ -105,13 +105,14 @@ class AddTransactionFragment : Fragment() {
 
         val datePicker: Date = Date(year,month,day)
         Log.d("Add Transaction","date: "+datePicker)
+        val monthYear = (""+month+year).toLong()
 
         val type = transaction_type_spinner_layout.editText?.text.toString()
         val comments = comments.editText?.text.toString()
 
         updateNetBalance(mode,amount)
 
-        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments, month, year, day, datePicker)
+        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments, month, year, day, datePicker,monthYear)
         viewModel.saveTask(transaction)
 
         activity!!.onBackPressed()
