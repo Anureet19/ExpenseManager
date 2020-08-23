@@ -53,6 +53,9 @@
             android:name="id"
             app:argType="long"
             android:defaultValue="0L"/>
+        <action
+            android:id="@+id/action_monthlyExpenseFragment_to_addTransactionFragment"
+            app:destination="@id/addTransactionFragment" />
     </fragment>
     <fragment
         android:id="@+id/onboardingFragment"

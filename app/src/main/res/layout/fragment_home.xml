@@ -10,153 +10,130 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!-- ProgressBar that represents a chart slice, where "android:progress" is the % value of the slice -->
 
-<!--    <ProgressBar-->
-<!--        android:id="@+id/empty_progressbar"-->
-<!--        style="?android:attr/progressBarStyleHorizontal"-->
-<!--        android:layout_width="120dp"-->
-<!--        android:layout_height="120dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:indeterminate="false"-->
-<!--        android:max="100"-->
-<!--        android:progress="100"-->
-<!--        android:progressDrawable="@drawable/empty_progress"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!--    <ProgressBar-->
-<!--        android:id="@+id/cash_progressbar"-->
-<!--        style="?android:attr/progressBarStyleHorizontal"-->
-<!--        android:layout_width="120dp"-->
-<!--        android:layout_height="120dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:indeterminate="false"-->
-<!--        android:max="100"-->
-<!--        android:progress="25"-->
-<!--        android:progressDrawable="@drawable/cash_progress"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <ProgressBar-->
-<!--        android:id="@+id/credit_progressbar"-->
-<!--        style="?android:attr/progressBarStyleHorizontal"-->
-<!--        android:layout_width="120dp"-->
-<!--        android:layout_height="120dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:indeterminate="false"-->
-<!--        android:max="100"-->
-<!--        android:progress="25"-->
-<!--        android:progressDrawable="@drawable/credit_progress"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <ProgressBar-->
-<!--        android:id="@+id/debit_progressbar"-->
-<!--        style="?android:attr/progressBarStyleHorizontal"-->
-<!--        android:layout_width="120dp"-->
-<!--        android:layout_height="120dp"-->
-<!--        android:layout_marginTop="32dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:indeterminate="false"-->
-<!--        android:max="100"-->
-<!--        android:progress="25"-->
-<!--        android:progressDrawable="@drawable/bank_progress"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-        <org.eazegraph.lib.charts.PieChart
-            android:id="@+id/piechart"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="32dp"
-            android:padding="6dp"
-            app:layout_constraintBottom_toBottomOf="@+id/debit_amount"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/balance_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/net_balance"
-            app:layout_constraintTop_toTopOf="@+id/net_balance_label" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-        android:id="@+id/net_balance_label"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="NET BALANCE"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/net_balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="35000.00"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/net_balance_label" />
+                <org.eazegraph.lib.charts.PieChart
+                    android:id="@+id/piechart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:padding="6dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/debit_amount"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/net_balance"
+                    app:layout_constraintTop_toTopOf="@+id/net_balance_label" />
 
-    <TextView
-        android:id="@+id/cash_amount_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Cash : "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/net_balance" />
+                <TextView
+                    android:id="@+id/net_balance_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="NET BALANCE"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/credit_amount_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Credit : "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cash_amount_label" />
+                <TextView
+                    android:id="@+id/net_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="0.0"
+                    android:textSize="30sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/net_balance_label" />
 
-    <TextView
-        android:id="@+id/debit_amount_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Debit : "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/credit_amount_label" />
+                <TextView
+                    android:id="@+id/cash_amount_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Cash : "
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/net_balance" />
 
-    <TextView
-        android:id="@+id/cash_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="35000"
-        app:layout_constraintStart_toEndOf="@+id/cash_amount_label"
-        app:layout_constraintTop_toBottomOf="@+id/net_balance" />
+                <TextView
+                    android:id="@+id/credit_amount_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Credit : "
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cash_amount_label" />
 
-    <TextView
-        android:id="@+id/credit_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="3500"
-        app:layout_constraintStart_toEndOf="@+id/credit_amount_label"
-        app:layout_constraintTop_toBottomOf="@+id/cash_amount" />
+                <TextView
+                    android:id="@+id/debit_amount_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Debit : "
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/credit_amount_label" />
 
-    <TextView
-        android:id="@+id/debit_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="35000"
-        app:layout_constraintStart_toEndOf="@+id/debit_amount_label"
-        app:layout_constraintTop_toBottomOf="@+id/credit_amount" />
+                <TextView
+                    android:id="@+id/cash_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="NA"
+                    app:layout_constraintStart_toEndOf="@+id/cash_amount_label"
+                    app:layout_constraintTop_toBottomOf="@+id/net_balance" />
+
+                <TextView
+                    android:id="@+id/credit_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="NA"
+                    app:layout_constraintStart_toEndOf="@+id/credit_amount_label"
+                    app:layout_constraintTop_toBottomOf="@+id/cash_amount" />
+
+                <TextView
+                    android:id="@+id/debit_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="NA"
+                    app:layout_constraintStart_toEndOf="@+id/debit_amount_label"
+                    app:layout_constraintTop_toBottomOf="@+id/credit_amount" />
+
+                <Button
+                    android:id="@+id/set_balance_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="set balance info"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:backgroundTint="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/debit_amount_label" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     <View
         android:id="@+id/divider"
@@ -166,7 +143,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debit_amount_label" />
+        app:layout_constraintTop_toBottomOf="@+id/balance_card" />
 
     <TextView
         android:id="@+id/upcoming_transaction_label"
