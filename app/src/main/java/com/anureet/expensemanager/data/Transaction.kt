@@ -8,8 +8,11 @@ import java.time.LocalDate
 import java.util.*
 
 
-enum class TransactionType{
+enum class TransactionMode{
     Cash, Credit, Bank
+}
+enum class Type{
+    INCOME, EXPENSE
 }
 
 @Entity(tableName = "transaction")
@@ -24,5 +27,6 @@ data class Transaction (@PrimaryKey(autoGenerate = true) val id: Long,
                         val year: Int,
                         val day: Int,
                         val datePicker: Date,
-                        val monthYear: Long
+                        val monthYear: Long,
+                        val income_expense : String
 )

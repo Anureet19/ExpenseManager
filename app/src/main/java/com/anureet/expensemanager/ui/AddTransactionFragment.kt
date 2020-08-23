@@ -15,10 +15,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.anureet.expensemanager.MaterialSpinnerAdapter
 import com.anureet.expensemanager.R
+import com.anureet.expensemanager.data.Type
 import com.anureet.expensemanager.data.Transaction
-import com.anureet.expensemanager.data.TransactionType
+import com.anureet.expensemanager.data.TransactionMode
 import kotlinx.android.synthetic.main.fragment_add_transaction.*
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,7 +56,7 @@ class AddTransactionFragment : Fragment() {
 
         // Setting up drop down
         val type = mutableListOf<String>()
-        TransactionType.values().forEach { type.add(it.name) }
+        TransactionMode.values().forEach { type.add(it.name) }
         val adapter = MaterialSpinnerAdapter(requireActivity(), R.layout.spinner_item, type)
         (transaction_type_spinner_layout.editText as? AutoCompleteTextView)?.setAdapter(adapter)
 
@@ -68,10 +68,10 @@ class AddTransactionFragment : Fragment() {
             it?.let{ setData(it) }
         })
         expense_button.setOnClickListener {
-            saveTask(Mode.EXPENSE)
+            saveTask(Type.EXPENSE)
         }
         income_button.setOnClickListener {
-            saveTask(Mode.INCOME)
+            saveTask(Type.INCOME)
         }
     }
 
@@ -112,7 +112,7 @@ class AddTransactionFragment : Fragment() {
 
         updateNetBalance(mode,amount)
 
-        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments, month, year, day, datePicker,monthYear)
+        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments, month, year, day, datePicker,monthYear,mode.toString())
         viewModel.saveTask(transaction)
 
         activity!!.onBackPressed()
@@ -123,7 +123,7 @@ class AddTransactionFragment : Fragment() {
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
         var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
 
-        if(mode == Mode.EXPENSE){
+        if(mode == Type.EXPENSE){
             monthlyBudget = (monthlyBudget - amount.toDouble()).toFloat()
         }else{
             monthlyBudget = (monthlyBudget + amount.toDouble()).toFloat()
@@ -167,6 +167,3 @@ class AddTransactionFragment : Fragment() {
 
 }
 
-enum class Mode{
-    INCOME, EXPENSE
-}

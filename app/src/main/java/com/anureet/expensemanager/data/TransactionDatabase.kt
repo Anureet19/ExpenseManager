@@ -12,6 +12,7 @@ abstract class TransactionDatabase: RoomDatabase()  {
 
     abstract fun transactionDetailDao(): TransactionDetailDao
     abstract fun transactionListDao() : TransactionListDao
+    abstract fun monthlyTransactionListDao() : MonthlyTransactionListDao
 
     companion object {
         @Volatile
