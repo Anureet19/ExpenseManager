@@ -14,4 +14,18 @@ class TransactionListRepository(context: Application) {
         return transactionListDao.getMonth()
     }
 
+    fun getAmount(): LiveData<Float>{
+        return transactionListDao.getAmount()
+    }
+
+    fun getCashAmount(): LiveData<Float>{
+        return transactionListDao.getCashAmount()
+    }
+    fun getBankAmount(): LiveData<Float>{
+        return transactionListDao.getBankAmount()
+    }
+    fun getCreditAmount(): LiveData<Float>{
+        return transactionListDao.getCreditAmount()
+    }
+
 }

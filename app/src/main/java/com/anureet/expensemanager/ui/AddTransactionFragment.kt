@@ -91,6 +91,12 @@ class AddTransactionFragment : Fragment() {
         val amount = transaction_amount_add.editText?.text.toString()
         val category = category_spinner_layout.editText?.text.toString()
 
+        //Converting amount to float
+        var finalAmt = amount.toFloat()
+        if(mode == Type.EXPENSE){
+            finalAmt *= -1
+        }
+
         var date = transaction_date_layout.editText?.text.toString()
 
         // Storing date as day,month and year
@@ -110,31 +116,31 @@ class AddTransactionFragment : Fragment() {
         val type = transaction_type_spinner_layout.editText?.text.toString()
         val comments = comments.editText?.text.toString()
 
-        updateNetBalance(mode,amount)
+//        updateNetBalance(mode,amount)
 
-        val transaction = Transaction(viewModel.transactionId.value!!, name, Integer.parseInt(amount).toDouble(), date,category, type, comments, month, year, day, datePicker,monthYear,mode.toString())
+        val transaction = Transaction(viewModel.transactionId.value!!, name, finalAmt, date,category, type, comments, month, year, day, datePicker,monthYear,mode.toString())
         viewModel.saveTask(transaction)
 
         activity!!.onBackPressed()
     }
 
     // Updating net balance
-    fun <E : Enum<E>> updateNetBalance(mode: E, amount: String){
-        val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
-        var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
-
-        if(mode == Type.EXPENSE){
-            monthlyBudget = (monthlyBudget - amount.toDouble()).toFloat()
-        }else{
-            monthlyBudget = (monthlyBudget + amount.toDouble()).toFloat()
-        }
-
-
-        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-        editor.putFloat(getString(R.string.netBalance), monthlyBudget)
-        editor.apply()
-
-    }
+//    fun <E : Enum<E>> updateNetBalance(mode: E, amount: String){
+//        val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
+//        var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
+//
+//        if(mode == Type.EXPENSE){
+//            monthlyBudget = (monthlyBudget - amount.toDouble()).toFloat()
+//        }else{
+//            monthlyBudget = (monthlyBudget + amount.toDouble()).toFloat()
+//        }
+//
+//
+//        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+//        editor.putFloat(getString(R.string.netBalance), monthlyBudget)
+//        editor.apply()
+//
+//    }
 
 
     // Setting up Calendar for DatePicker

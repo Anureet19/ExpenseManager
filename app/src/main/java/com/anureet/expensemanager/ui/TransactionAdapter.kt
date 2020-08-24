@@ -45,7 +45,7 @@ class TransactionAdapter(private val listener: (Long) -> Unit):
                 transaction_mode.text = transaction.transaction_type
                 transaction_name.text = transaction.name
                 if(transaction.income_expense.equals(Type.EXPENSE.toString())) {
-                    transaction_amount.text = "-" + transaction.amount
+                    transaction_amount.text =  ""+ transaction.amount
                     transaction_amount.setTextColor(Color.RED)
                 }else{
                     transaction_amount.text = "+" + transaction.amount

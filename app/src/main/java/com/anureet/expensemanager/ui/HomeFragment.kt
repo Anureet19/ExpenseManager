@@ -47,6 +47,7 @@ class HomeFragment : Fragment() {
         // Getting data to set up name and monthly budget in the home screen
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
         var yearlyBudget = sharedPreferences.getFloat("Budget",0f)*12
+        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
 
         net_balance.text = yearlyBudget.toString()
 
@@ -99,6 +100,42 @@ class HomeFragment : Fragment() {
         })
 
 
+        viewModel.expense.observe(viewLifecycleOwner, Observer{
+            if(it!=null){
+                yearlyBudget += it
+                editor.putFloat(getString(R.string.YearlyBudget),yearlyBudget)
+                net_balance.text = yearlyBudget.toString()
+            }
+        })
+
+        var cash = sharedPreferences.getFloat(getString(R.string.CASH),0f)
+        var credit = sharedPreferences.getFloat(getString(R.string.CASH),0f)
+        var bank = sharedPreferences.getFloat(getString(R.string.CASH),0f)
+
+
+        viewModel.cash.observe(viewLifecycleOwner, Observer{
+            if(cash!=0f && it!=null){
+                cash += it
+                editor.putFloat(getString(R.string.CASH),cash)
+                cash_amount.text = cash.toString()
+            }
+        })
+        viewModel.credit.observe(viewLifecycleOwner, Observer{
+            if(credit!=0f && it!=null){
+                credit += it
+                editor.putFloat(getString(R.string.CREDIT),credit)
+                credit_amount.text = credit.toString()
+            }
+        })
+        viewModel.bank.observe(viewLifecycleOwner, Observer{
+            if(bank!=0f && it!=null){
+                bank += it
+                editor.putFloat(getString(R.string.BANK),bank)
+                debit_amount.text = bank.toString()
+            }
+        })
+        updatePieChart()
+
     }
     private fun showDialog() {
 
@@ -126,8 +163,7 @@ class HomeFragment : Fragment() {
     private fun checkValues(dialog: View) {
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
 
-        var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
-        var yearlyBudget = monthlyBudget*12
+        var yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
 
 
         val boardingTextWatcher = object : TextWatcher {
@@ -166,14 +202,14 @@ class HomeFragment : Fragment() {
     private fun setBalanceInfo(cashAmount: Float, bankAmount: Float, dialog: View) {
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
 
-        var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
-        val creditAmount = (monthlyBudget*12) - (cashAmount + bankAmount)
+        var yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
+        val creditAmount = (yearlyBudget) - (cashAmount + bankAmount)
         dialog.Credit.setText(creditAmount.toString())
 
         val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-        editor.putFloat("CashAmount",cashAmount)
-        editor.putFloat("BankAmount",bankAmount)
-        editor.putFloat("CreditAmount",creditAmount)
+        editor.putFloat(getString(R.string.CASH),cashAmount)
+        editor.putFloat(getString(R.string.BANK),bankAmount)
+        editor.putFloat(getString(R.string.CREDIT),creditAmount)
         editor.apply()
 
         //UpdatePieChart
@@ -209,6 +245,7 @@ class HomeFragment : Fragment() {
         )
 
         piechart?.startAnimation();
+
     }
 
 

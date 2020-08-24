@@ -25,6 +25,17 @@ class OnboardingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val sharedPreferences : SharedPreferences = requireActivity().getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        var openedFirstTime: String? = sharedPreferences.getString("FirstTimeInstall","")
+        if(openedFirstTime.equals("Yes")){
+            findNavController().navigate(OnboardingFragmentDirections.actionOnboardingFragmentToHomeFragment())
+        }else{
+
+            val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+            editor.putString("FirstTimeInstall","Yes")
+            editor.apply()
+
+        }
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_onboarding, container, false)
     }
@@ -44,6 +55,7 @@ class OnboardingFragment : Fragment() {
             val editor:SharedPreferences.Editor =  sharedPreferences.edit()
             editor.putString("Name",name)
             editor.putFloat(getString(R.string.netBalance),monthlyBudget.toFloat())
+            editor.putFloat(getString(R.string.YearlyBudget),monthlyBudget.toFloat()*12)
             editor.apply()
             findNavController().navigate(
                 OnboardingFragmentDirections.actionOnboardingFragmentToHomeFragment(name,monthlyBudget.toFloat())

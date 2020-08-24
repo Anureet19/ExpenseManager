@@ -16,4 +16,14 @@ class TransactionListViewModel(application: Application): AndroidViewModel(appli
 
     val month: LiveData<List<MonthlyTransactions>>
     get() = repo.getMonth()
+
+    val expense: LiveData<Float>
+    get() = repo.getAmount()
+
+    val cash: LiveData<Float>
+        get() = repo.getCashAmount()
+    val credit: LiveData<Float>
+        get() = repo.getCreditAmount()
+    val bank: LiveData<Float>
+        get() = repo.getBankAmount()
 }

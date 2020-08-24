@@ -18,7 +18,7 @@ enum class Type{
 @Entity(tableName = "transaction")
 data class Transaction (@PrimaryKey(autoGenerate = true) val id: Long,
                         val name: String,
-                        val amount: Double,
+                        val amount: Float,
                         val date: String,
                         val category: String,
                         val transaction_type: String,
