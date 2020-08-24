@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
 
         // Getting data to set up name and monthly budget in the home screen
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
-        var yearlyBudget = sharedPreferences.getFloat("Budget",0f)*12
+        var yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
         val editor:SharedPreferences.Editor =  sharedPreferences.edit()
 
         net_balance.text = yearlyBudget.toString()
@@ -77,16 +77,17 @@ class HomeFragment : Fragment() {
             )
         }
 
+
         // Month Card List
         with(monthly_card_list){
             layoutManager = LinearLayoutManager(activity)
-            adapter = MonthlyCardAdapter {
+            adapter = MonthlyCardAdapter({
                 findNavController().navigate(
                     HomeFragmentDirections.actionHomeFragmentToMonthlyExpenseFragment(
                         it
                     )
                 )
-            }
+            },requireContext())
 
         }
 
@@ -179,10 +180,10 @@ class HomeFragment : Fragment() {
                     dialog.set_info.isEnabled = false
                 }else if(!cashAmount.isEmpty() && cashAmount.toFloat() > yearlyBudget){
                     dialog.set_info.isEnabled = false
-                    dialog.Cash.setError("Greater than net balance available")
+                    dialog.Cash.error = "Greater than net balance available"
                 }else if(!bankAmount.isEmpty() && bankAmount.toFloat()>yearlyBudget || cashAmount.toFloat()+bankAmount.toFloat() > yearlyBudget){
                     dialog.set_info.isEnabled = false
-                    dialog.Bank.setError("Greater than net balance available")
+                    dialog.Bank.error = "Greater than net balance available"
                 }
                 else{
                     dialog.Cash.error = null

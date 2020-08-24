@@ -1,6 +1,7 @@
 package com.anureet.expensemanager.data
 
 import android.os.Parcelable
+import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import kotlinx.android.parcel.Parcelize
 
@@ -15,10 +16,7 @@ data class MonthlyTransactions (
     @ColumnInfo(name = "year")
     var year: Int,
 
-    @ColumnInfo(name = "day")
-    var day: Int
-
-//    @ColumnInfo(name = "amount")
-//    var amount: Double
+    @ColumnInfo(name = "SUM(amount)")
+     var sum:Float
 
 )

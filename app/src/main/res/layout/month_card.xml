@@ -5,15 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    app:strokeWidth="5dp"
     app:cardCornerRadius="10dp"
-    app:strokeColor="#FF0000"
-    app:cardElevation="10dp">
+    app:cardElevation="10dp"
+    app:strokeWidth="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
+
+        <ImageView
+            android:id="@+id/arrow_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider2"
+            app:srcCompat="@drawable/arrow_forward"
+            tools:ignore="VectorDrawableCompat" />
+
+        <TextView
+            android:id="@+id/view_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIEW ALL "
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/arrow_forward" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toTopOf="@id/view_all"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/transaction_list" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/transaction_list"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/divider2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/month_name">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:id="@+id/month_name"
@@ -32,9 +72,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="TextView"
+            android:text=""
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/year_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" 2020"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/month_name"
+            app:layout_constraintTop_toTopOf="@id/month_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </com.google.android.material.card.MaterialCardView>

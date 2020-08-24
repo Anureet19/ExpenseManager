@@ -1,5 +1,9 @@
 package com.anureet.expensemanager.ui
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.provider.Settings.Global.getString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,25 +18,27 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.list_item.*
 import kotlinx.android.synthetic.main.list_item.transaction_date
 import kotlinx.android.synthetic.main.month_card.*
+import kotlin.coroutines.coroutineContext
 
-class MonthlyCardAdapter(private val listener: (Long) -> Unit):
+class MonthlyCardAdapter(private val listener: (Long) -> Unit, val context: Context):
     ListAdapter<MonthlyTransactions, MonthlyCardAdapter.ViewHolder>(
         DiffCallback2()
     ){
+
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ViewHolder {
         val itemLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.month_card, parent, false)
 
-        return ViewHolder(itemLayout)
+        return ViewHolder(itemLayout,context)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class ViewHolder (override val containerView: View) : RecyclerView.ViewHolder(containerView),
+    inner class ViewHolder (override val containerView: View,val context: Context) : RecyclerView.ViewHolder(containerView),
         LayoutContainer {
         init{
             itemView.setOnClickListener{
@@ -41,10 +47,19 @@ class MonthlyCardAdapter(private val listener: (Long) -> Unit):
         }
 
         fun bind(monthlyTransactions: MonthlyTransactions){
+            val sharedPreferences : SharedPreferences = this.context.getSharedPreferences("Preference", Context.MODE_PRIVATE)
+            var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
             with(monthlyTransactions){
                 month_name.text = selectMonth(monthlyTransactions.month)
-                budget_exceeded.text = "Not exceeded"
-
+                year_name.text = " "+monthlyTransactions.year.toString()
+                Log.d("MonthlyCard","aug: "+monthlyTransactions.sum+" "+monthlyBudget)
+                if((monthlyTransactions.sum * (-1)) > monthlyBudget) {
+                    budget_exceeded.text = "Budget Exceeded"
+                    budget_exceeded.error = "Budget Exceeded"
+                }else{
+                    budget_exceeded.text = ""
+                    budget_exceeded.error = null
+                }
             }
         }
     }

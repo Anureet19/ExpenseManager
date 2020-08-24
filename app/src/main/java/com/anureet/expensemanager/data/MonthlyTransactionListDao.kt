@@ -8,4 +8,6 @@ import androidx.room.Query
 interface MonthlyTransactionListDao {
     @Query("SELECT * FROM `transaction` WHERE monthYear = :monthYear ORDER BY date DESC")
     fun getTransactionByMonth(monthYear: Long): LiveData<List<Transaction>>
+
+
 }
