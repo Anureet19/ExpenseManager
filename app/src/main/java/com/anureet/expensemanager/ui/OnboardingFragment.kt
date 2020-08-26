@@ -56,6 +56,7 @@ class OnboardingFragment : Fragment() {
             editor.putString("Name",name)
             editor.putFloat(getString(R.string.netBalance),monthlyBudget.toFloat())
             editor.putFloat(getString(R.string.YearlyBudget),monthlyBudget.toFloat()*12)
+            editor.putFloat(getString(R.string.FinalMonthBudget),monthlyBudget.toFloat())
             editor.apply()
             findNavController().navigate(
                 OnboardingFragmentDirections.actionOnboardingFragmentToHomeFragment(name,monthlyBudget.toFloat())

@@ -4,28 +4,31 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anureet.expensemanager.R
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.month_card.*
 import kotlinx.android.synthetic.main.set_balance_info.view.*
-import org.eazegraph.lib.charts.PieChart
 import org.eazegraph.lib.models.PieModel
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel: TransactionListViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -103,6 +106,7 @@ class HomeFragment : Fragment() {
 
         viewModel.expense.observe(viewLifecycleOwner, Observer{
             if(it!=null){
+                yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
                 yearlyBudget += it
                 editor.putFloat(getString(R.string.YearlyBudget),yearlyBudget)
                 net_balance.text = yearlyBudget.toString()
@@ -116,6 +120,7 @@ class HomeFragment : Fragment() {
 
         viewModel.cash.observe(viewLifecycleOwner, Observer{
             if(cash!=0f && it!=null){
+                cash = sharedPreferences.getFloat(getString(R.string.CASH),0f)
                 cash += it
                 editor.putFloat(getString(R.string.CASH),cash)
                 cash_amount.text = cash.toString()
@@ -123,6 +128,7 @@ class HomeFragment : Fragment() {
         })
         viewModel.credit.observe(viewLifecycleOwner, Observer{
             if(credit!=0f && it!=null){
+                credit = sharedPreferences.getFloat(getString(R.string.CASH),0f)
                 credit += it
                 editor.putFloat(getString(R.string.CREDIT),credit)
                 credit_amount.text = credit.toString()
@@ -130,6 +136,9 @@ class HomeFragment : Fragment() {
         })
         viewModel.bank.observe(viewLifecycleOwner, Observer{
             if(bank!=0f && it!=null){
+                bank = sharedPreferences.getFloat(getString(R.string.CASH),0f)
+                Log.d("TAG","BANK: "+it)
+                Log.d("TAG","BANK S:"+bank)
                 bank += it
                 editor.putFloat(getString(R.string.BANK),bank)
                 debit_amount.text = bank.toString()
@@ -164,7 +173,7 @@ class HomeFragment : Fragment() {
     private fun checkValues(dialog: View) {
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
 
-        var yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
+        var yearlyBudget = sharedPreferences.getFloat(getString(R.string.FinalMonthBudget),0f)*12
 
 
         val boardingTextWatcher = object : TextWatcher {
@@ -203,7 +212,7 @@ class HomeFragment : Fragment() {
     private fun setBalanceInfo(cashAmount: Float, bankAmount: Float, dialog: View) {
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
 
-        var yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
+        var yearlyBudget = sharedPreferences.getFloat(getString(R.string.FinalMonthBudget),0f)*12
         val creditAmount = (yearlyBudget) - (cashAmount + bankAmount)
         dialog.Credit.setText(creditAmount.toString())
 
@@ -213,8 +222,11 @@ class HomeFragment : Fragment() {
         editor.putFloat(getString(R.string.CREDIT),creditAmount)
         editor.apply()
 
-        //UpdatePieChart
+        // UpdatePieChart
         updatePieChart()
+
+        // Refresh Fragment
+        refreshFragment()
 
     }
 
@@ -247,6 +259,14 @@ class HomeFragment : Fragment() {
 
         piechart?.startAnimation();
 
+    }
+    @Suppress("DEPRECATION")
+    fun refreshFragment() {
+        val ft: FragmentTransaction = requireFragmentManager().beginTransaction()
+        if (Build.VERSION.SDK_INT >= 26) {
+            ft.setReorderingAllowed(false)
+        }
+        ft.detach(this).attach(this).commit()
     }
 
 

@@ -10,7 +10,7 @@ interface TransactionListDao{
     @Query("SELECT * FROM `transaction` WHERE date >= date('now') ORDER BY date ASC")
     fun getTransactions(): LiveData<List<Transaction>>
 
-    @Query("SELECT monthYear, month, year, SUM(amount) FROM `transaction` GROUP BY monthYear ORDER BY year, month")
+    @Query("SELECT t1.monthYear, t1.month, t1.year, SUM(t1.amount) as sum,(SELECT t2.name FROM `transaction` as t2 WHERE t1.monthYear = t2.monthYear) as expense FROM `transaction` as t1 GROUP BY monthYear ORDER BY year, month")
     fun getMonth(): LiveData<List<MonthlyTransactions>>
 
     @Query("SELECT Sum(amount) FROM `transaction`")

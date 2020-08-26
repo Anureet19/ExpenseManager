@@ -1,30 +1,33 @@
 package com.anureet.expensemanager.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.provider.Settings.Global.getString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.anureet.expensemanager.R
 import com.anureet.expensemanager.data.MonthlyTransactions
-import com.anureet.expensemanager.data.Transaction
 import com.anureet.expensemanager.selectMonth
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.list_item.*
-import kotlinx.android.synthetic.main.list_item.transaction_date
 import kotlinx.android.synthetic.main.month_card.*
-import kotlin.coroutines.coroutineContext
+import kotlinx.android.synthetic.main.month_card.view.*
+import java.nio.file.Files.size
 
 class MonthlyCardAdapter(private val listener: (Long) -> Unit, val context: Context):
     ListAdapter<MonthlyTransactions, MonthlyCardAdapter.ViewHolder>(
         DiffCallback2()
     ){
 
+    private var viewPool : RecyclerView.RecycledViewPool = RecyclerView.RecycledViewPool()
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ViewHolder {
@@ -33,6 +36,7 @@ class MonthlyCardAdapter(private val listener: (Long) -> Unit, val context: Cont
 
         return ViewHolder(itemLayout,context)
     }
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
@@ -44,26 +48,43 @@ class MonthlyCardAdapter(private val listener: (Long) -> Unit, val context: Cont
             itemView.setOnClickListener{
                 listener.invoke(getItem(adapterPosition).monthYear)
             }
+
         }
 
-        fun bind(monthlyTransactions: MonthlyTransactions){
+
+    @SuppressLint("WrongConstant")
+    fun bind(monthlyTransactions: MonthlyTransactions){
             val sharedPreferences : SharedPreferences = this.context.getSharedPreferences("Preference", Context.MODE_PRIVATE)
             var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
-            with(monthlyTransactions){
+            with(monthlyTransactions) {
                 month_name.text = selectMonth(monthlyTransactions.month)
-                year_name.text = " "+monthlyTransactions.year.toString()
-                Log.d("MonthlyCard","aug: "+monthlyTransactions.sum+" "+monthlyBudget)
-                if((monthlyTransactions.sum * (-1)) > monthlyBudget) {
+                year_name.text = " " + monthlyTransactions.year.toString()
+                Log.d("MonthlyCard", "aug: " + monthlyTransactions.sum + " " + monthlyBudget)
+                if ((monthlyTransactions.sum * (-1)) > monthlyBudget) {
                     budget_exceeded.text = "Budget Exceeded"
                     budget_exceeded.error = "Budget Exceeded"
-                }else{
+                } else {
                     budget_exceeded.text = ""
                     budget_exceeded.error = null
                 }
+
+                val childLayoutManager = LinearLayoutManager(context, LinearLayout.HORIZONTAL, false)
+        childLayoutManager.initialPrefetchItemCount = 4
+                monthcard_list.apply {
+                    layoutManager = childLayoutManager
+                    adapter = MonthCardAdapter(monthlyTransactions.children)
+                    setRecycledViewPool(viewPool)
+                }
+
             }
+
+
         }
     }
+
 }
+
+
 class DiffCallback2 : DiffUtil.ItemCallback<MonthlyTransactions>() {
     override fun areItemsTheSame(oldItem: MonthlyTransactions, newItem: MonthlyTransactions): Boolean {
         return oldItem.monthYear == newItem.monthYear

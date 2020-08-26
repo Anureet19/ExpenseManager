@@ -43,11 +43,12 @@
             app:layout_constraintTop_toBottomOf="@+id/transaction_list" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/transaction_list"
+            android:id="@+id/monthcard_list"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@id/divider2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

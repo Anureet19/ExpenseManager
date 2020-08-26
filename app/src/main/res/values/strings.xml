@@ -7,4 +7,5 @@
     <string name="CASH">CashAmount</string>
     <string name="BANK">BankAmount</string>
     <string name="CREDIT">CreditAmount</string>
+    <string name="FinalMonthBudget">FinalMonthlyBudget</string>
 </resources>
