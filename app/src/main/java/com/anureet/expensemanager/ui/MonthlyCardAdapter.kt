@@ -68,7 +68,7 @@ class MonthlyCardAdapter(private val listener: (Long) -> Unit, val context: Cont
                     budget_exceeded.error = null
                 }
 
-                val childLayoutManager = LinearLayoutManager(context, LinearLayout.HORIZONTAL, false)
+                val childLayoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
         childLayoutManager.initialPrefetchItemCount = 4
                 monthcard_list.apply {
                     layoutManager = childLayoutManager
