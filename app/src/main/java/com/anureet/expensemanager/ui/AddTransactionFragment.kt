@@ -1,5 +1,6 @@
 package com.anureet.expensemanager.ui
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -62,6 +63,24 @@ class AddTransactionFragment : Fragment() {
 
         val id = AddTransactionFragmentArgs.fromBundle(requireArguments()).id
         viewModel.setTaskId(id)
+        if(!(id == 0L)){
+            disableFields()
+            topAppBar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.edit -> {
+                        // Handle edit icon press
+                        enableFields()
+                        true
+                    }
+                    R.id.delete -> {
+                        // Handle delete icon press
+                        deleteTransaction()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
 
 
         viewModel.transaction.observe(viewLifecycleOwner, Observer {
@@ -75,11 +94,45 @@ class AddTransactionFragment : Fragment() {
         }
     }
 
+    private fun enableFields() {
+        transaction_name.isEnabled = true
+        transaction_amount_add.isEnabled = true
+        transaction_date_layout.isEnabled = true
+        recurring_to_date.isEnabled = true
+        recurring_from_date.isEnabled = true
+        recurring_transaction.isEnabled = true
+        category_spinner_layout.isEnabled = true
+        transaction_type_spinner_layout.isEnabled = true
+        comments.isEnabled = true
+        expense_button.isEnabled = true
+        income_button.isEnabled = true
+    }
+
+    private fun disableFields() {
+        transaction_name.isEnabled = false
+        transaction_amount_add.isEnabled = false
+        transaction_date_layout.isEnabled = false
+        recurring_to_date.isEnabled = false
+        recurring_from_date.isEnabled = false
+        recurring_transaction.isEnabled = false
+        category_spinner_layout.isEnabled = false
+        transaction_type_spinner_layout.isEnabled = false
+        comments.isEnabled = false
+        expense_button.isEnabled = false
+        income_button.isEnabled = false
+
+    }
+
     // Setting up data
     private fun setData(transaction: Transaction){
         transaction_name.editText?.setText(transaction.name)
-        transaction_amount_add.editText?.setText(transaction.amount.toString())
-        transaction_date_layout.editText?.setText(transaction.date.toString())
+        transaction_amount_add.editText?.setText((transaction.amount *(-1)).toString())
+
+        var date = transaction.day.toString() +"/0"+transaction.month+"/"+transaction.year
+        if(transaction.month<10)
+            date = transaction.day.toString() +"/0"+transaction.month+"/"+transaction.year
+
+        transaction_date_layout.editText?.setText(date)
         transaction_type_spinner_layout.editText?.setText(transaction.transaction_type)
         category_spinner_layout.editText?.setText(transaction.category)
         comments.editText?.setText(transaction.comments)
@@ -169,6 +222,25 @@ class AddTransactionFragment : Fragment() {
                 show()
             }
         }
+    }
+
+    fun deleteTransaction() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Alert!")
+
+        builder.setMessage("Do you want to delete item?")
+
+        builder.setPositiveButton("delete") { dialogInterface, which ->
+            viewModel.deleteTask()
+            requireActivity().onBackPressed()
+        }
+        builder.setNegativeButton("cancel") { dialogInterface, which ->
+
+        }
+
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
     }
 
 }

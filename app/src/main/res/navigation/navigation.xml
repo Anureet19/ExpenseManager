@@ -34,6 +34,9 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/homeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTransactionFragment"
@@ -68,4 +71,9 @@
             app:destination="@id/homeFragment" />
 
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.anureet.expensemanager.ui.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
 </navigation>

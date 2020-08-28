@@ -28,7 +28,8 @@ class TransactionDetailViewModel(application: Application): AndroidViewModel(app
         viewModelScope.launch {
             if(_transactionId.value == 0L){
                 _transactionId.value = repo.insertTask(transaction)
-            }else{
+            }
+            else{
                 repo.updateTask(transaction)
             }
         }

@@ -20,7 +20,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anureet.expensemanager.R
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.month_card.*
 import kotlinx.android.synthetic.main.set_balance_info.view.*
 import org.eazegraph.lib.models.PieModel
 
@@ -47,6 +46,8 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        appBar()
+
         // Getting data to set up name and monthly budget in the home screen
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
         var yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
@@ -69,6 +70,8 @@ class HomeFragment : Fragment() {
                         it
                     )
                 )
+//                deleteTransaction(it)
+
             }
         }
 
@@ -147,6 +150,19 @@ class HomeFragment : Fragment() {
         updatePieChart()
 
     }
+
+    private fun appBar() {
+        topAppBar.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.profile -> {
+
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     private fun showDialog() {
 
         val dialog = LayoutInflater.from(requireContext()).inflate(R.layout.set_balance_info, null)
@@ -268,6 +284,7 @@ class HomeFragment : Fragment() {
         }
         ft.detach(this).attach(this).commit()
     }
+
 
 
 }

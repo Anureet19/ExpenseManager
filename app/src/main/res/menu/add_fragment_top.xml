@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_baseline_edit_48"
+        android:title="Edit Transaction"
+        android:contentDescription="You can edit transaction"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_baseline_delete_48"
+        android:title="Delete Transacion"
+        android:contentDescription="You can delete transaction"
+        app:showAsAction="ifRoom" />
+
+</menu>
