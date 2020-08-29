@@ -89,11 +89,32 @@ class AddTransactionFragment : Fragment() {
             it?.let{ setData(it) }
         })
         expense_button.setOnClickListener {
-            saveTask(Type.EXPENSE)
+            val isNull = checkNullValues()
+            if(isNull)
+                saveTask(Type.EXPENSE)
         }
         income_button.setOnClickListener {
-            saveTask(Type.INCOME)
+            val isNull = checkNullValues()
+            if(isNull)
+                saveTask(Type.INCOME)
         }
+    }
+
+    private fun checkNullValues(): Boolean {
+        val name = transaction_name.editText?.text.toString()
+        val amount = transaction_amount_add.editText?.text.toString()
+        val type = transaction_type_spinner_layout.editText?.text.toString()
+        val date = transaction_date_layout.editText?.text.toString()
+
+        if(name==""||amount==""||type==""||date==""){
+            Toast.makeText(
+                context,
+                "Please fill all the mandatory fields",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        }
+        return true
     }
 
     private fun enableFields() {
