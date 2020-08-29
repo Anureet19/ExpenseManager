@@ -39,7 +39,7 @@
             android:layout_marginStart="18dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="18dp"
-            android:hint="Transaction Name"
+            android:hint="Transaction Name*"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,13 +54,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/transaction_amount_add"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="18dp"
-            android:hint="Amount"
+            android:hint="Amount*"
+            android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,7 +83,7 @@
             android:layout_marginEnd="18dp"
             android:clickable="true"
             android:editable="false"
-            android:hint="Select Date"
+            android:hint="Select Date*"
             app:endIconDrawable="@drawable/ic_baseline_calendar"
             app:endIconMode="custom"
             app:layout_constraintEnd_toEndOf="parent"
@@ -179,7 +180,7 @@
             android:layout_marginStart="18dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="18dp"
-            android:hint="Select Transaction Type"
+            android:hint="Select Transaction Type*"
             app:endIconDrawable="@drawable/ic_baseline_arrow_drop_down_24"
             app:endIconMode="custom"
             app:layout_constraintEnd_toEndOf="parent"
@@ -189,7 +190,7 @@
             <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

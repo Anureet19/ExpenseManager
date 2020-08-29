@@ -43,17 +43,30 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onResume() {
+        val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
+        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+        setNetBalance(sharedPreferences,editor)
+        refreshInfo(sharedPreferences,editor)
+        super.onResume()
+    }
+
+//    override fun onPause() {
+//        val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
+//        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+//        setNetBalance(sharedPreferences,editor)
+//        refreshInfo(sharedPreferences,editor)
+//        super.onPause()
+//    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         appBar()
 
-        // Getting data to set up name and monthly budget in the home screen
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
-        var yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
         val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-
-        net_balance.text = yearlyBudget.toString()
+        setNetBalance(sharedPreferences, editor)
 
         updatePieChart()
 
@@ -107,6 +120,53 @@ class HomeFragment : Fragment() {
         })
 
 
+
+
+        refreshInfo(sharedPreferences, editor)
+
+    }
+
+    private fun refreshInfo(sharedPreferences: SharedPreferences, editor: SharedPreferences.Editor) {
+        var cash = sharedPreferences.getFloat(getString(R.string.CASH), 0f)
+        var credit = sharedPreferences.getFloat(getString(R.string.CASH), 0f)
+        var bank = sharedPreferences.getFloat(getString(R.string.CASH), 0f)
+
+
+        viewModel.cash.observe(viewLifecycleOwner, Observer {
+            if (cash != 0f && it != null) {
+                cash = sharedPreferences.getFloat(getString(R.string.CASH), 0f)
+                cash += it
+                editor.putFloat(getString(R.string.CASH), cash)
+                cash_amount.text = cash.toString()
+            }
+        })
+        viewModel.credit.observe(viewLifecycleOwner, Observer {
+            if (credit != 0f && it != null) {
+                credit = sharedPreferences.getFloat(getString(R.string.CASH), 0f)
+                credit += it
+                editor.putFloat(getString(R.string.CREDIT), credit)
+                credit_amount.text = credit.toString()
+            }
+        })
+        viewModel.bank.observe(viewLifecycleOwner, Observer {
+            if (bank != 0f && it != null) {
+                bank = sharedPreferences.getFloat(getString(R.string.CASH), 0f)
+                Log.d("TAG", "BANK: " + it)
+                Log.d("TAG", "BANK S:" + bank)
+                bank += it
+                editor.putFloat(getString(R.string.BANK), bank)
+                debit_amount.text = bank.toString()
+            }
+        })
+//        editor.commit()
+        updatePieChart()
+    }
+
+    private fun setNetBalance(sharedPreferences: SharedPreferences, editor: SharedPreferences.Editor) {
+        // Getting data to set up name and monthly budget in the home screen
+        var yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
+
+        net_balance.text = yearlyBudget.toString()
         viewModel.expense.observe(viewLifecycleOwner, Observer{
             if(it!=null){
                 yearlyBudget = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
@@ -115,47 +175,13 @@ class HomeFragment : Fragment() {
                 net_balance.text = yearlyBudget.toString()
             }
         })
-
-        var cash = sharedPreferences.getFloat(getString(R.string.CASH),0f)
-        var credit = sharedPreferences.getFloat(getString(R.string.CASH),0f)
-        var bank = sharedPreferences.getFloat(getString(R.string.CASH),0f)
-
-
-        viewModel.cash.observe(viewLifecycleOwner, Observer{
-            if(cash!=0f && it!=null){
-                cash = sharedPreferences.getFloat(getString(R.string.CASH),0f)
-                cash += it
-                editor.putFloat(getString(R.string.CASH),cash)
-                cash_amount.text = cash.toString()
-            }
-        })
-        viewModel.credit.observe(viewLifecycleOwner, Observer{
-            if(credit!=0f && it!=null){
-                credit = sharedPreferences.getFloat(getString(R.string.CASH),0f)
-                credit += it
-                editor.putFloat(getString(R.string.CREDIT),credit)
-                credit_amount.text = credit.toString()
-            }
-        })
-        viewModel.bank.observe(viewLifecycleOwner, Observer{
-            if(bank!=0f && it!=null){
-                bank = sharedPreferences.getFloat(getString(R.string.CASH),0f)
-                Log.d("TAG","BANK: "+it)
-                Log.d("TAG","BANK S:"+bank)
-                bank += it
-                editor.putFloat(getString(R.string.BANK),bank)
-                debit_amount.text = bank.toString()
-            }
-        })
-        updatePieChart()
-
     }
 
     private fun appBar() {
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
                 R.id.profile -> {
-
+                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
                     true
                 }
                 else -> false
@@ -236,6 +262,7 @@ class HomeFragment : Fragment() {
         editor.putFloat(getString(R.string.CASH),cashAmount)
         editor.putFloat(getString(R.string.BANK),bankAmount)
         editor.putFloat(getString(R.string.CREDIT),creditAmount)
+        editor.putBoolean(getString(R.string.FLAG),true)
         editor.apply()
 
         // UpdatePieChart

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -60,6 +61,7 @@ class AddTransactionFragment : Fragment() {
         TransactionMode.values().forEach { type.add(it.name) }
         val adapter = MaterialSpinnerAdapter(requireActivity(), R.layout.spinner_item, type)
         (transaction_type_spinner_layout.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+        transaction_type_spinner_layout.editText?.setText("Cash")
 
         val id = AddTransactionFragmentArgs.fromBundle(requireArguments()).id
         viewModel.setTaskId(id)
@@ -140,6 +142,8 @@ class AddTransactionFragment : Fragment() {
 
     // Saving task
     private fun <E : Enum<E>> saveTask(mode: E){
+        var checkType = true
+
         val name = transaction_name.editText?.text.toString()
         val amount = transaction_amount_add.editText?.text.toString()
         val category = category_spinner_layout.editText?.text.toString()
@@ -158,23 +162,93 @@ class AddTransactionFragment : Fragment() {
         val day = Integer.parseInt(date.substring(0,2))
 
         if(month<10)
-            date = ""+year+"-0"+month+"-"+day
+            date = "$year-0$month-$day"
         else
-            date = ""+year+"-"+month+"-"+day
+            date = "$year-$month-$day"
 
         val datePicker: Date = Date(year,month,day)
         Log.d("Add Transaction","date: "+datePicker)
         val monthYear = (""+month+year).toLong()
 
         val type = transaction_type_spinner_layout.editText?.text.toString()
+        if(type!="Cash" && type!="Bank" && type!= "Credit"){
+            Toast.makeText(
+                context,
+                "Invalid Type! Please select from the given types",
+                Toast.LENGTH_LONG
+            ).show()
+            checkType=false
+        }
+
         val comments = comments.editText?.text.toString()
 
+        val checkBalance = checkPossibility(type,finalAmt)
+
 //        updateNetBalance(mode,amount)
+        if(checkBalance && checkType) {
+            val transaction = Transaction(
+                viewModel.transactionId.value!!,
+                name,
+                finalAmt,
+                date,
+                category,
+                type,
+                comments,
+                month,
+                year,
+                day,
+                datePicker,
+                monthYear,
+                mode.toString()
+            )
+            viewModel.saveTask(transaction)
+            activity!!.onBackPressed()
+        }
 
-        val transaction = Transaction(viewModel.transactionId.value!!, name, finalAmt, date,category, type, comments, month, year, day, datePicker,monthYear,mode.toString())
-        viewModel.saveTask(transaction)
+    }
 
-        activity!!.onBackPressed()
+    private fun checkPossibility(type: String, finalAmt: Float): Boolean {
+        val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
+        var cash = sharedPreferences.getFloat(getString(R.string.CASH), 0f)
+        var credit = sharedPreferences.getFloat(getString(R.string.CREDIT), 0f)
+        var bank = sharedPreferences.getFloat(getString(R.string.BANK), 0f)
+        val flag = sharedPreferences.getBoolean(getString(R.string.FLAG),false)
+        val yearly = sharedPreferences.getFloat(getString(R.string.YearlyBudget),0f)
+
+        // To check if info is added or not
+        if(flag) {
+            if (type == "Cash" && cash + finalAmt < 0) {
+                Toast.makeText(
+                    requireContext(),
+                    "Transaction not possible as Cash amount is insufficient",
+                    Toast.LENGTH_LONG
+                ).show()
+                return false
+            } else if (type == "Credit" && credit + finalAmt < 0) {
+                Toast.makeText(
+                    context,
+                    "Transaction not possible as Credit amount is insufficient",
+                    Toast.LENGTH_LONG
+                ).show()
+                return false
+            } else if (type == "Bank" && bank + finalAmt < 0) {
+                Toast.makeText(
+                    context,
+                    "Transaction not possible as Bank amount is insufficient",
+                    Toast.LENGTH_LONG
+                ).show()
+                return false
+            }
+        }else if(yearly+finalAmt<0){
+            Toast.makeText(
+                context,
+                "Transaction not possible as Balance amount is insufficient",
+                Toast.LENGTH_LONG
+            ).show()
+            return false
+        }
+        return true
+
     }
 
     // Updating net balance

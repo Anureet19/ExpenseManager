@@ -8,4 +8,7 @@
     <string name="BANK">BankAmount</string>
     <string name="CREDIT">CreditAmount</string>
     <string name="FinalMonthBudget">FinalMonthlyBudget</string>
+    <string name="Name">Name</string>
+    <string name="Income">Income</string>
+    <string name="FLAG">Flag</string>
 </resources>

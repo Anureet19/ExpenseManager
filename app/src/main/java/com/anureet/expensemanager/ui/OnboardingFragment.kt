@@ -48,12 +48,18 @@ class OnboardingFragment : Fragment() {
         monthly_income.editText?.addTextChangedListener(boardingTextWatcher)
 
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference",Context.MODE_PRIVATE)
+        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+
+        val income = monthly_income.editText?.text.toString()
+        if(income!=""){
+            editor.putFloat(getString(R.string.Income),income.toFloat())
+        }
 
         continueButton.setOnClickListener {
             val name = profile_name.editText?.text.toString()
             val monthlyBudget = monthly_budget.editText?.text.toString()
-            val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-            editor.putString("Name",name)
+
+            editor.putString(getString(R.string.Name),name)
             editor.putFloat(getString(R.string.netBalance),monthlyBudget.toFloat())
             editor.putFloat(getString(R.string.YearlyBudget),monthlyBudget.toFloat()*12)
             editor.putFloat(getString(R.string.FinalMonthBudget),monthlyBudget.toFloat())
