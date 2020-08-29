@@ -1,6 +1,8 @@
 package com.anureet.expensemanager.ui
 
+import android.content.Context
 import android.graphics.Color
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +45,10 @@ class TransactionAdapter(private val listener: (Long) -> Unit):
             with(transaction){
 
                 transaction_mode.text = transaction.transaction_type
+                if(transaction.transaction_type == "Cash"){
+//                    transaction_type_view.setBackgroundColor(getResources().getColor(R.color.cash))
+                }
+
                 transaction_name.text = transaction.name
                 if(transaction.income_expense.equals(Type.EXPENSE.toString())) {
                     transaction_amount.text =  ""+ transaction.amount

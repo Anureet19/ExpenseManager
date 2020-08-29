@@ -20,6 +20,9 @@ class MonthlyTransactionListViewModel(application: Application): AndroidViewMode
     val transactionByMonth: LiveData<List<Transaction>> = Transformations.switchMap(_transactionMonthYear){ id ->
         repo.getTransactionByMonth(id)
     }
+    val sumByMonth: LiveData<Float> = Transformations.switchMap(_transactionMonthYear){ id ->
+        repo.getSumByMonth(id)
+    }
 
     fun setMonthYear(monthYear: Long){
         _transactionMonthYear.value = monthYear

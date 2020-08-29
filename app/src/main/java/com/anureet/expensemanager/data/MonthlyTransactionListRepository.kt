@@ -9,4 +9,7 @@ class MonthlyTransactionListRepository(context: Application) {
     fun getTransactionByMonth(monthYear: Long): LiveData<List<Transaction>> {
         return monthlyTransactionListDao.getTransactionByMonth(monthYear)
     }
+    fun getSumByMonth(monthYear: Long): LiveData<Float>{
+        return monthlyTransactionListDao.getSumByMonth(monthYear)
+    }
 }

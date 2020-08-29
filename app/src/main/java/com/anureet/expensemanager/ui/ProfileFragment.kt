@@ -91,6 +91,7 @@ class ProfileFragment : Fragment() {
         editor.putFloat(getString(R.string.CREDIT),0f)
         editor.putFloat(getString(R.string.BANK),0f)
         editor.putBoolean(getString(R.string.FLAG),false)
+
         editor.commit()
     }
 

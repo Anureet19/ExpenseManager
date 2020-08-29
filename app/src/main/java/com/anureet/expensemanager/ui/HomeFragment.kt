@@ -265,6 +265,7 @@ class HomeFragment : Fragment() {
         editor.putBoolean(getString(R.string.FLAG),true)
         editor.apply()
 
+
         // UpdatePieChart
         updatePieChart()
 
