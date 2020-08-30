@@ -1,19 +1,17 @@
 package com.anureet.expensemanager.ui
 
+import android.app.ActionBar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anureet.expensemanager.R
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.android.synthetic.main.fragment_calendar.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.month_card.*
 import java.text.DateFormat
 import java.util.*
 
@@ -38,6 +36,13 @@ class CalendarFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        // Adding Back Button
+        val toolbar : MaterialToolbar = requireActivity().findViewById(R.id.calendarAppBar)
+        toolbar.setNavigationIcon(R.drawable.ic_chevron_left)
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         // get a calendar instance
         val calendar = Calendar.getInstance()
 
@@ -51,16 +56,6 @@ class CalendarFragment : Fragment() {
                 date = "$year-0$m-$dayOfMonth"
 
             viewModel.setDate(date)
-//            viewModel.amountByMonth.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-////                if(it!=null) {
-//                    val adapter =
-//                        ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, it)
-//
-//                    // Assign adapter to ListView
-//                    calendar_list.setAdapter(adapter)
-////                }
-//            })
-
 
             Log.d("TAG","yearmonth:"+date)
 
@@ -72,6 +67,7 @@ class CalendarFragment : Fragment() {
             // medium format date
             textView.text = formattedDate
 
+            // Show the corresponding transaction on screen
             with(calendar_list){
                 layoutManager = LinearLayoutManager(activity)
                 adapter = CalendarAdapter {
@@ -79,7 +75,6 @@ class CalendarFragment : Fragment() {
                 }
 
             }
-
 
             viewModel.amountByMonth.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
                 (calendar_list.adapter as CalendarAdapter).submitList(it)

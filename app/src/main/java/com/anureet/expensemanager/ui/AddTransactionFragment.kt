@@ -20,6 +20,7 @@ import com.anureet.expensemanager.R
 import com.anureet.expensemanager.data.Type
 import com.anureet.expensemanager.data.Transaction
 import com.anureet.expensemanager.data.TransactionMode
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.android.synthetic.main.fragment_add_transaction.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -46,6 +47,13 @@ class AddTransactionFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        // Adding back button
+        val toolbar : MaterialToolbar = requireActivity().findViewById(R.id.addAppBar)
+        toolbar.setNavigationIcon(R.drawable.ic_chevron_left)
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         // Implementation of DatePicker to set valid dates
         transaction_date_layout.editText?.transformIntoDatePicker(requireContext(), "dd/MM/yyyy")
         transaction_date_layout.editText?.transformIntoDatePicker(requireContext(), "dd/MM/yyyy", Date())
@@ -63,11 +71,24 @@ class AddTransactionFragment : Fragment() {
         (transaction_type_spinner_layout.editText as? AutoCompleteTextView)?.setAdapter(adapter)
         transaction_type_spinner_layout.editText?.setText("Cash")
 
+        recurring_transaction.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                recurring_from_date.isEnabled = true
+                recurring_to_date.isEnabled = true
+            }else{
+                recurring_from_date.isEnabled = false
+                recurring_to_date.isEnabled = false
+                recurring_from_date.editText?.setText("")
+                recurring_to_date.editText?.setText("")
+
+            }
+        }
+
         val id = AddTransactionFragmentArgs.fromBundle(requireArguments()).id
         viewModel.setTaskId(id)
         if(!(id == 0L)){
             disableFields()
-            topAppBar.setOnMenuItemClickListener { menuItem ->
+            addAppBar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.edit -> {
                         // Handle edit icon press
@@ -100,6 +121,7 @@ class AddTransactionFragment : Fragment() {
         }
     }
 
+    // Checking for null values
     private fun checkNullValues(): Boolean {
         val name = transaction_name.editText?.text.toString()
         val amount = transaction_amount_add.editText?.text.toString()
@@ -117,6 +139,7 @@ class AddTransactionFragment : Fragment() {
         return true
     }
 
+    // Enabling fields
     private fun enableFields() {
         transaction_name.isEnabled = true
         transaction_amount_add.isEnabled = true
@@ -131,6 +154,7 @@ class AddTransactionFragment : Fragment() {
         income_button.isEnabled = true
     }
 
+    // Disabling fields
     private fun disableFields() {
         transaction_name.isEnabled = false
         transaction_amount_add.isEnabled = false
@@ -187,6 +211,7 @@ class AddTransactionFragment : Fragment() {
         else
             date = "$year-$month-$day"
 
+        // Setting date picker
         val datePicker: Date = Date(year,month,day)
         Log.d("Add Transaction","date: "+datePicker)
         val monthYear = (""+month+year).toLong()
@@ -203,9 +228,12 @@ class AddTransactionFragment : Fragment() {
 
         val comments = comments.editText?.text.toString()
 
+        var recurringFrom = recurring_from_date.editText?.text.toString()
+        var recurringTo = recurring_to_date.editText?.text.toString()
+
         val checkBalance = checkPossibility(type,finalAmt)
 
-//        updateNetBalance(mode,amount)
+        // Checking before saving
         if(checkBalance && checkType) {
             val transaction = Transaction(
                 viewModel.transactionId.value!!,
@@ -220,10 +248,12 @@ class AddTransactionFragment : Fragment() {
                 day,
                 datePicker,
                 monthYear,
-                mode.toString()
+                mode.toString(),
+                recurringFrom,
+                recurringTo
             )
             viewModel.saveTask(transaction)
-            activity!!.onBackPressed()
+            requireActivity().onBackPressed()
         }
 
     }
@@ -271,24 +301,6 @@ class AddTransactionFragment : Fragment() {
         return true
 
     }
-
-    // Updating net balance
-//    fun <E : Enum<E>> updateNetBalance(mode: E, amount: String){
-//        val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
-//        var monthlyBudget = sharedPreferences.getFloat("Budget",0f)
-//
-//        if(mode == Type.EXPENSE){
-//            monthlyBudget = (monthlyBudget - amount.toDouble()).toFloat()
-//        }else{
-//            monthlyBudget = (monthlyBudget + amount.toDouble()).toFloat()
-//        }
-//
-//
-//        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-//        editor.putFloat(getString(R.string.netBalance), monthlyBudget)
-//        editor.apply()
-//
-//    }
 
 
     // Setting up Calendar for DatePicker

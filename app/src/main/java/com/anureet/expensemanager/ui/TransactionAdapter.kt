@@ -1,11 +1,13 @@
 package com.anureet.expensemanager.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -45,8 +47,16 @@ class TransactionAdapter(private val listener: (Long) -> Unit):
             with(transaction){
 
                 transaction_mode.text = transaction.transaction_type
-                if(transaction.transaction_type == "Cash"){
-//                    transaction_type_view.setBackgroundColor(getResources().getColor(R.color.cash))
+                when (transaction.transaction_type) {
+                    "Cash" -> {
+                        transaction_type_view.setBackgroundResource(R.color.cash)
+                    }
+                    "Credit" -> {
+                        transaction_type_view.setBackgroundResource(R.color.credit)
+                    }
+                    "Bank" -> {
+                        transaction_type_view.setBackgroundResource(R.color.bank)
+                    }
                 }
 
                 transaction_name.text = transaction.name

@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anureet.expensemanager.R
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.set_balance_info.view.*
 import org.eazegraph.lib.models.PieModel
@@ -51,17 +52,16 @@ class HomeFragment : Fragment() {
         super.onResume()
     }
 
-//    override fun onPause() {
-//        val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
-//        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-//        setNetBalance(sharedPreferences,editor)
-//        refreshInfo(sharedPreferences,editor)
-//        super.onPause()
-//    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        // Adding Back Button
+        val toolbar : MaterialToolbar = requireActivity().findViewById(R.id.topAppBar)
+        toolbar.setNavigationIcon(R.drawable.ic_baseline_person_48)
+        toolbar.setNavigationOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
+        }
         appBar()
 
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
@@ -83,7 +83,6 @@ class HomeFragment : Fragment() {
                         it
                     )
                 )
-//                deleteTransaction(it)
 
             }
         }
@@ -158,7 +157,6 @@ class HomeFragment : Fragment() {
                 debit_amount.text = bank.toString()
             }
         })
-//        editor.commit()
         updatePieChart()
     }
 
@@ -180,10 +178,10 @@ class HomeFragment : Fragment() {
     private fun appBar() {
         topAppBar.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId){
-                R.id.profile -> {
-                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
-                    true
-                }
+//                R.id.profile -> {
+//                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
+//                    true
+//                }
                 R.id.calendar -> {
                     findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCalendarFragment())
                     true

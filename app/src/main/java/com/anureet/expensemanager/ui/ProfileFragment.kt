@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.anureet.expensemanager.R
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -29,6 +30,13 @@ class ProfileFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        // Adding back button
+        val toolbar : MaterialToolbar = requireActivity().findViewById(R.id.profileTopAppBar)
+        toolbar.setNavigationIcon(R.drawable.ic_chevron_left)
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         val sharedPreferences : SharedPreferences = this.requireActivity().getSharedPreferences("Preference", Context.MODE_PRIVATE)
         var monthlyBudget = sharedPreferences.getFloat(getString(R.string.FinalMonthBudget),0f)

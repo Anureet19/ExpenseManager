@@ -28,5 +28,7 @@ data class Transaction (@PrimaryKey(autoGenerate = true) val id: Long,
                         val day: Int,
                         val datePicker: Date,
                         val monthYear: Long,
-                        val income_expense : String
+                        val income_expense : String,
+                        val recurring_from : String,
+                        val recurring_to : String 
 )

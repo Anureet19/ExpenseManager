@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anureet.expensemanager.R
+import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.android.synthetic.main.fragment_monthly_expense.*
 
 
@@ -38,6 +39,13 @@ class MonthlyExpenseFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        // Adding back button
+        val toolbar : MaterialToolbar = requireActivity().findViewById(R.id.monthAppBar)
+        toolbar.setNavigationIcon(R.drawable.ic_chevron_left)
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         setMonthlyBalance()
 
@@ -88,7 +96,7 @@ class MonthlyExpenseFragment : Fragment() {
     private fun updateProgressBar(sharedPreferences: SharedPreferences, balance: Float) {
         var monthBalance = sharedPreferences.getFloat(getString(R.string.FinalMonthBudget),0f)
 
-        var progress = (balance/monthBalance)*100
+        var progress = 100-(balance/monthBalance)*100
 
         if(progress>100){
             pb.progress = 100

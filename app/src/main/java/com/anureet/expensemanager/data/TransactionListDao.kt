@@ -7,7 +7,7 @@ import androidx.room.Query
 
 @Dao
 interface TransactionListDao{
-    @Query("SELECT * FROM `transaction` WHERE date >= date('now') ORDER BY date ASC")
+    @Query("SELECT * FROM `transaction` WHERE (recurring_to <= date('now')) AND (SELECT strftime('%d', date)) = (SELECT strftime('%d', date('now'))) OR date >= date('now') ORDER BY date ASC")
     fun getTransactions(): LiveData<List<Transaction>>
 
     @Query("SELECT t1.monthYear, t1.month, t1.year, SUM(t1.amount) as sum,(SELECT t2.name FROM `transaction` as t2 WHERE t1.monthYear = t2.monthYear LIMIT 3) as expense FROM `transaction` as t1 GROUP BY monthYear ORDER BY year, month")
