@@ -9,6 +9,10 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.anureet.expensemanager"
         minSdkVersion 19
@@ -77,4 +81,9 @@ dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
     implementation 'com.github.kizitonwose:CalendarView:0.4.3'
 
+    kapt "com.android.databinding:compiler:3.2.0-alpha10"
+
+}
+kapt {
+    generateStubs = true
 }

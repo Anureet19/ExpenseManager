@@ -7,4 +7,11 @@
         android:title="Edit Transaction"
         android:contentDescription="You can edit transaction"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/calendar"
+        android:icon="@drawable/ic_baseline_calendar_today_24"
+        android:title="Calendar view"
+        android:contentDescription="You can see calendar view"
+        app:showAsAction="ifRoom" />
 </menu>

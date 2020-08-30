@@ -184,6 +184,10 @@ class HomeFragment : Fragment() {
                     findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToProfileFragment())
                     true
                 }
+                R.id.calendar -> {
+                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCalendarFragment())
+                    true
+                }
                 else -> false
             }
         }

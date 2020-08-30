@@ -12,4 +12,7 @@ interface MonthlyTransactionListDao {
     @Query("SELECT SUM(amount) FROM `transaction` WHERE monthYear = :monthYear")
     fun getSumByMonth(monthYear: Long): LiveData<Float>
 
+    @Query("SELECT name,amount,date FROM `transaction` WHERE date = :date")
+    fun getAmountByMonth(date: String): LiveData<List<expense>>
+
 }
