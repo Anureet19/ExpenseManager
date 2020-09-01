@@ -12,4 +12,7 @@
     <color name="bank">#66BB6A</color>
     <color name="credit">#EF5350</color>
     <color name="empty">#FF0000</color>
+
+    <color name="background">#33333d</color>
+    <color name="listColor">#33333d</color>
 </resources>

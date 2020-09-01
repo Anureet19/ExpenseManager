@@ -175,7 +175,7 @@ class AddTransactionFragment : Fragment() {
         transaction_name.editText?.setText(transaction.name)
         transaction_amount_add.editText?.setText((transaction.amount *(-1)).toString())
 
-        var date = transaction.day.toString() +"/0"+transaction.month+"/"+transaction.year
+        var date = transaction.day.toString() +"/"+transaction.month+"/"+transaction.year
         if(transaction.month<10)
             date = transaction.day.toString() +"/0"+transaction.month+"/"+transaction.year
 
