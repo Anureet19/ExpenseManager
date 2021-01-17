@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.anureet.expensemanager.MaterialSpinnerAdapter
 import com.anureet.expensemanager.R
@@ -33,7 +34,7 @@ class AddTransactionFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(TransactionDetailViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(TransactionDetailViewModel::class.java)
     }
 
     override fun onCreateView(
