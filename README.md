@@ -30,11 +30,6 @@ This is an android application which is build using kotlin.
 - [x] On clicking the month card, detailed view for the month is displayed.
 - [x] The app calendar button in the menu bar opens a calendar view which displays the total/expense for a particular day.
 
-## Features in progress
-- [ ] Better user experience and design.
-- [ ] Feature to add recurring transaction.
-- [ ] Swipe option to mark a transaction complete.
-
 
 # Getting Started
 You need to have android studio installed on your device and create an Android Virtual Device to run full Android OS and test the application.
